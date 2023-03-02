@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 
 export default function TextForm(props) {
-    const [text, setText] = useState(' ');
+    const [text, setText] = useState('');
 
     const handleUpClick = () => {
         let newText = text.toUpperCase();
@@ -52,6 +52,7 @@ export default function TextForm(props) {
         var text =document.getElementById('myBox');
         text.select();
         navigator.clipboard.writeText(text.value);
+        document.getSelection().removeAllRanges();
         props.showAlert("Text copied to clipboard!", "success");
     }
 
@@ -64,16 +65,6 @@ export default function TextForm(props) {
     const handleOnChange = (event) => {
         setText(event.target.value);
     }
-
-    const words = (text) => {
-        let words = text.trim().split(" ").length;
-        if (words === 1 && text.split(" ")[0] === "") {
-          words = 0;
-          return words;
-        } else {
-          return words;
-        }
-      }
     
     
 
@@ -81,26 +72,26 @@ export default function TextForm(props) {
     return (
         <>
                 <div className='container p-4' style={ {color : props.mode === 'dark' ? 'white':'black'}}>
-                <h1>{props.heading}</h1>
+                <h2 className='mb-3'>{props.heading}</h2>
                     <div className="mb-3">
-                        <textarea className="form-control" style={ {backgroundColor : props.mode === 'dark' ? '#0c1933':'white', color : props.mode === 'dark' ? 'white':'black'}} value={text} onChange={handleOnChange} id="myBox" rows="8" ></textarea>
+                        <textarea className="form-control" style={ {backgroundColor : props.mode === 'dark' ? '#192a4c':'white', color : props.mode === 'dark' ? 'white':'black'}} value={text} onChange={handleOnChange} id="myBox" rows="7" ></textarea>
                     </div>
-                    <button className="btn btn-primary my-2 mx-1" onClick={handleUpClick}>Convert to Uppercase</button>
-                    <button className="btn btn-primary my-2 mx-1" onClick={handleLoClick}>Convert to Lowercase</button>
-                    <button className="btn btn-primary my-2 mx-1" onClick={handleRevClick}>Reverse text</button>
-                    <button className="btn btn-primary my-2 mx-1" onClick={handleBoldClick}>Bold</button>
-                    <button className="btn btn-primary my-2 mx-1" onClick={handleItalicClick}>Italic</button>
-                    <button className="btn btn-primary my-2 mx-1" onClick={handleUnderlineClick}>Underline</button>
-                    <button className="btn btn-primary my-2 mx-1" onClick={handleNormalClick}>Normal Text</button>
-                    <button className="btn btn-primary my-2 mx-1" onClick={handleCopy}>Copy Text</button>
-                    <button className="btn btn-primary my-2 mx-1" onClick={handleClearClick}>Clear Text</button>
+                    <button disabled={text.length===0} className="btn btn-primary my-1 mx-1" onClick={handleUpClick}>Convert to Uppercase</button>
+                    <button disabled={text.length===0} className="btn btn-primary my-1 mx-1" onClick={handleLoClick}>Convert to Lowercase</button>
+                    <button disabled={text.length===0} className="btn btn-primary my-1 mx-1" onClick={handleRevClick}>Reverse text</button>
+                    <button disabled={text.length===0} className="btn btn-primary my-1 mx-1" onClick={handleBoldClick}>Bold</button>
+                    <button disabled={text.length===0} className="btn btn-primary my-1 mx-1" onClick={handleItalicClick}>Italic</button>
+                    <button disabled={text.length===0} className="btn btn-primary my-1 mx-1" onClick={handleUnderlineClick}>Underline</button>
+                    <button disabled={text.length===0} className="btn btn-primary my-1 mx-1" onClick={handleNormalClick}>Normal Text</button>
+                    <button disabled={text.length===0} className="btn btn-primary my-1 mx-1" onClick={handleCopy}>Copy Text</button>
+                    <button disabled={text.length===0} className="btn btn-primary my-1 mx-1" onClick={handleClearClick}>Clear Text</button>
                 </div>
-                <div className="container my-1 py-3 px-5 " style={ {color : props.mode === 'dark' ? 'white':'black'}}>
+                <div className="container my-1 py-2 px-4 " style={ {color : props.mode === 'dark' ? 'white':'black'}}>
                     <h2>Your text summary</h2>
-                    <p>{words(text)} words {text.length} characters</p>
-                    <p>{0.008 * text.split(" ").length} Minutes read </p>
+                    <p>{text.split(" ").filter((ele) => {return ele.length!==0}).length} words {text.length} characters</p>
+                    <p>{0.008 * text.split(" ").filter((ele) => {return ele.length!==0}).length} Minutes read </p>
                     <h2 className='py-2'>Preview</h2>
-                    <p>{text.length > 0 ? text : <i> Enter something in the textarea to preview it here</i>}</p>
+                    <p>{text.length > 0 ? text : <i>Nothing to preview!</i>}</p>
                 </div>
            
         </>
